@@ -39,7 +39,7 @@ hit_ratio = np.mean(iris_y_test == iris_y_predicted)
 print("hit ratio: " + str(hit_ratio))
 
 ## Linear Regression
-# https://scikit-learn.org/stable/tutorial/statistical_inference/supervised_learning.html#linear-regression
+# https://scikit-learn.org/stable/tutorial/statistical_inference/supervised_learning.ht ml#linear-regression
 
 diabetes_X, diabetes_y = datasets.load_diabetes(return_X_y=True)
 diabetes_X_train = diabetes_X[:-20]
@@ -50,4 +50,9 @@ regr = linear_model.LinearRegression()
 regr.fit(diabetes_X_train, diabetes_y_train)
 
 regression_MSE = np.mean((regr.predict(diabetes_X_test) - diabetes_y_test) ** 2)
-print("regression mean square error: " + str(regression_MSE))
+print("regression mean square error: " + str(regression_MSE)) # should be 2004.567
+
+# TODO np.c_ Translates slice objects to concatenation along the first axis.
+
+
+

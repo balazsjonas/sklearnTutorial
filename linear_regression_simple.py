@@ -13,11 +13,15 @@ e = np.random.standard_normal(N).reshape((N,1))
 y = m * x + b + e
 
 regr = linear_model.LinearRegression()
+ridge = linear_model.Ridge(alpha=10)
 regr.fit(x,y)
+ridge.fit(x,y)
 est = regr.predict(x)
+est_ridge = ridge.predict(x)
 
 plt.scatter(x, y)
 plt.plot(x,est, 'r')
+plt.plot(x,est_ridge, 'g')
 
 print(np.std(y - est))
 
