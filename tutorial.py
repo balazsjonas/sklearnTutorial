@@ -50,9 +50,15 @@ regr = linear_model.LinearRegression()
 regr.fit(diabetes_X_train, diabetes_y_train)
 
 regression_MSE = np.mean((regr.predict(diabetes_X_test) - diabetes_y_test) ** 2)
-print("regression mean square error: " + str(regression_MSE)) # should be 2004.567
+print("regression mean square error: " + str(regression_MSE))  # should be 2004.567
 
 # TODO np.c_ Translates slice objects to concatenation along the first axis.
 
-
-
+##########
+# classification
+# https://scikit-learn.org/stable/tutorial/statistical_inference/supervised_learning.html#classification
+log = linear_model.LogisticRegression(C=1e5)
+log.fit(iris_X_train, iris_y_train)
+# The C parameter controls the amount of regularization in the LogisticRegression object: a large value for C results in less regularization.
+print("train score: "+ str(log.score(iris_X_train, iris_y_train)))
+print("test score: "+ str(log.score(iris_X_test, iris_y_test)))
