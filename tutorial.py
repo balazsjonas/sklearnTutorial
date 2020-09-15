@@ -1,9 +1,11 @@
 import numpy as np
-from sklearn import datasets, linear_model
+from sklearn import datasets, linear_model, svm
 from sklearn.neighbors import KNeighborsClassifier
+from sklearn.model_selection import KFold, cross_val_score
 
 ##########
 # Datasets
+print("datasets")
 iris = datasets.load_iris()
 digits = datasets.load_digits()
 # https://scikit-learn.org/stable/tutorial/statistical_inference/settings.html
@@ -23,6 +25,7 @@ print(str(iris.data.shape[1]) + " features")
 
 ##########
 # k-nearest neighbors classifier:
+print("k nearest neighbors")
 np.random.seed(0)
 iris_X, iris_y = datasets.load_iris(return_X_y=True)
 np.unique(iris_y)
@@ -40,7 +43,7 @@ print("hit ratio: " + str(hit_ratio))
 
 ## Linear Regression
 # https://scikit-learn.org/stable/tutorial/statistical_inference/supervised_learning.ht ml#linear-regression
-
+print("linear regression")
 diabetes_X, diabetes_y = datasets.load_diabetes(return_X_y=True)
 diabetes_X_train = diabetes_X[:-20]
 diabetes_X_test = diabetes_X[-20:]
@@ -57,8 +60,20 @@ print("regression mean square error: " + str(regression_MSE))  # should be 2004.
 ##########
 # classification
 # https://scikit-learn.org/stable/tutorial/statistical_inference/supervised_learning.html#classification
+print("classification")
 log = linear_model.LogisticRegression(C=1e5)
 log.fit(iris_X_train, iris_y_train)
 # The C parameter controls the amount of regularization in the LogisticRegression object: a large value for C results in less regularization.
 print("train score: "+ str(log.score(iris_X_train, iris_y_train)))
 print("test score: "+ str(log.score(iris_X_test, iris_y_test)))
+
+###
+# model selection
+# https://scikit-learn.org/stable/tutorial/statistical_inference/model_selection.html
+print("model selection")
+X_digits, y_digits = datasets.load_digits(return_X_y=True)
+svc = svm.SVC(C=1, kernel='linear')
+svc.fit(X_digits[:-100], y_digits[:-100])
+k_fold = KFold(n_splits=5)
+print("cross validation scores: "+
+      str(cross_val_score(svc, X_digits, y_digits, cv=k_fold, n_jobs=-1)))
