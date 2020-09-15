@@ -1,7 +1,8 @@
 import numpy as np
 from sklearn import datasets, linear_model, svm
-from sklearn.neighbors import KNeighborsClassifier
 from sklearn.model_selection import KFold, cross_val_score
+from sklearn.neighbors import KNeighborsClassifier
+import pylab as plt
 
 ##########
 # Datasets
@@ -53,7 +54,8 @@ regr = linear_model.LinearRegression()
 regr.fit(diabetes_X_train, diabetes_y_train)
 
 regression_MSE = np.mean((regr.predict(diabetes_X_test) - diabetes_y_test) ** 2)
-print("regression mean square error: " + str(regression_MSE))  # should be 2004.567
+print(
+  "regression mean square error: " + str(regression_MSE))  # should be 2004.567
 
 # TODO np.c_ Translates slice objects to concatenation along the first axis.
 
@@ -64,8 +66,8 @@ print("classification")
 log = linear_model.LogisticRegression(C=1e5)
 log.fit(iris_X_train, iris_y_train)
 # The C parameter controls the amount of regularization in the LogisticRegression object: a large value for C results in less regularization.
-print("train score: "+ str(log.score(iris_X_train, iris_y_train)))
-print("test score: "+ str(log.score(iris_X_test, iris_y_test)))
+print("train score: " + str(log.score(iris_X_train, iris_y_train)))
+print("test score: " + str(log.score(iris_X_test, iris_y_test)))
 
 ###
 # model selection
@@ -75,5 +77,14 @@ X_digits, y_digits = datasets.load_digits(return_X_y=True)
 svc = svm.SVC(C=1, kernel='linear')
 svc.fit(X_digits[:-100], y_digits[:-100])
 k_fold = KFold(n_splits=5)
-print("cross validation scores: "+
+print("cross validation scores: " +
       str(cross_val_score(svc, X_digits, y_digits, cv=k_fold, n_jobs=-1)))
+Cs = np.logspace(-5, 0, 10)
+scores = np.zeros_like(Cs)
+for i in range(10):
+  svc = svm.SVC(C=Cs[i], kernel='rbf')
+  scores[i] = np.mean(cross_val_score(svc, X_digits, y_digits, cv=k_fold, n_jobs=-1))
+plt.semilogx(Cs, scores)
+plt.show()
+
+# TODO https://scikit-learn.org/stable/tutorial/statistical_inference/unsupervised_learning.html
