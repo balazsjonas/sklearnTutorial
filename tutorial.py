@@ -1,8 +1,9 @@
 import numpy as np
-from sklearn import datasets, linear_model, svm
+from sklearn import datasets, linear_model, svm, cluster
 from sklearn.model_selection import KFold, cross_val_score
 from sklearn.neighbors import KNeighborsClassifier
 import pylab as plt
+from itertools import cycle
 
 ##########
 # Datasets
@@ -87,4 +88,20 @@ for i in range(10):
 plt.semilogx(Cs, scores)
 plt.show()
 
-# TODO https://scikit-learn.org/stable/tutorial/statistical_inference/unsupervised_learning.html
+
+###
+# Clustering
+# https://scikit-learn.org/stable/tutorial/statistical_inference/unsupervised_learning.html
+
+X = [[1,1], [2,2], [3,3],[3,2],
+     [1,-1],[-2, -2], [-3, -3],
+     [-1,1], [-2,2], [-3,3]]
+
+k_means = cluster.KMeans(n_clusters=3)
+k_means.fit(X)
+plt.figure()
+colors = ['b','g','r','c','m']
+for i in range(10):
+    plt.plot(X[i][0], X[i][1], 'o', markerfacecolor=colors[k_means.labels_[i]],
+             markeredgecolor='k', markersize=14)
+plt.show()
